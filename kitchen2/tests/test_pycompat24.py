@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
 import unittest
-from nose.plugins.skip import SkipTest
 
 import __builtin__
 import base64 as py_b64

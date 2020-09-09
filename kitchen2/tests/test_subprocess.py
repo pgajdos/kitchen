@@ -1,5 +1,4 @@
 import unittest
-from nose.plugins.skip import SkipTest
 from kitchen.pycompat27.subprocess import _subprocess as subprocess
 import sys
 import StringIO
