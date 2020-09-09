@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from nose import tools
+import unittest
 
 import sys
 import warnings
@@ -8,8 +8,8 @@ import warnings
 import importlib
 from kitchen.pycompat25.collections import defaultdict
 
-class TestPendingDeprecationModules(object):
-    def __init__(self):
+class TestPendingDeprecationModules(unittest.TestCase):
+    def setUp(self):
         kitchen_path = 'kitchen'
         collections_path = 'kitchen/collections'
         pycompat24_path = 'kitchen/pycompat24'
@@ -46,7 +46,7 @@ class TestPendingDeprecationModules(object):
                         ('%s is deprecated' % module_name) in warning.args[0]:
                     warning_raised = True
                     break
-            tools.assert_true(warning_raised, msg='%s did not raise a PendingDeprecationWarning' % module_fqn)
+            self.assertTrue(warning_raised, msg='%s did not raise a PendingDeprecationWarning' % module_fqn)
 
     def test_modules(self):
         for mod in self.module_data:
@@ -62,4 +62,4 @@ class TestPendingDeprecationModules(object):
                         ('defaultdict is deprecated') in warning.args[0]:
                     warning_raised = True
                     break
-            tools.assert_true(warning_raised, msg='kitchen.pycompat25.collections.defaultdict did not raise a PendingDeprecationWarning')
+            self.assertTrue(warning_raised, msg='kitchen.pycompat25.collections.defaultdict did not raise a PendingDeprecationWarning')

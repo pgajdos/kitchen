@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from nose import tools
+
+import unittest
 
 import os
 import types
@@ -18,7 +19,7 @@ class NoAll(RuntimeError):
 class FailedImport(RuntimeError):
     pass
 
-class Test__all__(object):
+class Test__all__(unittest.TestCase):
     '''Test that every function in __all__ exists and that no public methods
     are missing from __all__
     '''
@@ -100,9 +101,9 @@ class Test__all__(object):
         try:
             try:
                 f = open(modpath, 'r', encoding='utf-8')
-                tools.ok_('__all__' in f.read(), '%s does not contain __all__' % modpath)
+                self.assertTrue('__all__' in f.read(), '%s does not contain __all__' % modpath)
             except IOError as e:
-                tools.ok_(False, '%s' % e)
+                self.assertTrue(False, '%s' % e)
         finally:
             if f:
                 f.close()
@@ -131,13 +132,13 @@ class Test__all__(object):
             exec('from %s.%s import *' % (modpath, modname), interior_names)
         except Exception as e:
             # Include the module name in the exception string
-            tools.ok_(False, '__all__ failure in %s: %s: %s' % (
+            self.assertTrue(False, '__all__ failure in %s: %s: %s' % (
                       modname, e.__class__.__name__, e))
         if '__builtins__' in interior_names:
             del interior_names['__builtins__']
         keys = set(interior_names)
         all = set(names[modname].__all__)
-        tools.ok_(keys == all)
+        self.assertTrue(keys == all)
 
     def test_everything_in__all__exists(self):
         '''
@@ -172,7 +173,7 @@ class Test__all__(object):
 
         all = set(mod.__all__)
         public = set(expected_public)
-        tools.ok_(all.issuperset(public), 'These public names are not in %s.__all__: %s'
+        self.assertTrue(all.issuperset(public), 'These public names are not in %s.__all__: %s'
                 % (modname, ', '.join(public.difference(all))))
 
     def test__all__is_complete(self):

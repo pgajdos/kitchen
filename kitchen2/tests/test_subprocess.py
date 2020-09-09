@@ -481,7 +481,7 @@ class ProcessTestCase(BaseTestCase):
     # Test for the fd leak reported in http://bugs.python.org/issue2791.
     def test_communicate_pipe_fd_leak(self):
         if not os.path.isdir('/proc/%d/fd' % os.getpid()):
-            raise SkipTest('Linux specific')
+            self.skipTest('Linux specific')
         fd_directory = '/proc/%d/fd' % os.getpid()
         num_fds_before_popen = len(os.listdir(fd_directory))
         p = subprocess.Popen([sys.executable, "-c", "print()"],
@@ -602,7 +602,7 @@ class ProcessTestCase(BaseTestCase):
 
     def test_no_leaking(self):
         if not test_support:
-            raise SkipTest("No test_support module available.")
+            self.skipTest("No test_support module available.")
 
         # Make sure we leak no resources
         if not mswindows:
@@ -623,7 +623,7 @@ class ProcessTestCase(BaseTestCase):
                 # python-2.3  unittest doesn't have skipTest.  Reimplement with nose
                 #self.skipTest("failed to reach the file descriptor limit "
                 #    "(tried %d)" % max_handles)
-                raise SkipTest("failed to reach the file descriptor limit "
+                self.skipTest("failed to reach the file descriptor limit "
                     "(tried %d)" % max_handles)
 
             # Close a couple of them (should be enough for a subprocess)
@@ -805,7 +805,7 @@ class _SuppressCoreFiles(object):
     #                     "Requires signal.SIGALRM")
     def test_communicate_eintr(self):
         if not hasattr(signal, 'SIGALRM'):
-            raise SkipTest('Requires signal.SIGALRM')
+            self.skipTest('Requires signal.SIGALRM')
         # Issue #12493: communicate() should handle EINTR
         def handler(signum, frame):
             pass
@@ -832,7 +832,7 @@ class _SuppressCoreFiles(object):
 class POSIXProcessTestCase(BaseTestCase):
     def setUp(self):
         if mswindows:
-            raise SkipTest('POSIX specific tests')
+            self.skipTest('POSIX specific tests')
 
     def test_exceptions(self):
         # caught & re-raised exceptions
@@ -965,7 +965,7 @@ class POSIXProcessTestCase(BaseTestCase):
 
             # skipTest unavailable on python<2.7 reimplement with nose
             #self.skipTest("bash or ksh required for this test")
-            raise SkipTest("bash or ksh required for this test")
+            self.skipTest("bash or ksh required for this test")
         sh = '/bin/sh'
         if os.path.isfile(sh) and not os.path.islink(sh):
             # Test will fail if /bin/sh is a symlink to csh.
@@ -1132,7 +1132,7 @@ class POSIXProcessTestCase(BaseTestCase):
     def test_wait_when_sigchild_ignored(self):
         # NOTE: sigchild_ignore.py may not be an effective test on all OSes.
         if not test_support:
-            raise SkipTest("No test_support module available.")
+            self.skipTest("No test_support module available.")
         sigchild_ignore = test_support.findfile(os.path.join("subprocessdata",
             "sigchild_ignore.py"))
         p = subprocess.Popen([sys.executable, sigchild_ignore],
@@ -1252,7 +1252,7 @@ class POSIXProcessTestCase(BaseTestCase):
 class Win32ProcessTestCase(BaseTestCase):
     def setUp(self):
         if not mswindows:
-            raise SkipTest('Windows specific tests')
+            self.skipTest('Windows specific tests')
 
     def test_startupinfo(self):
         # startupinfo argument
@@ -1367,7 +1367,7 @@ class Win32ProcessTestCase(BaseTestCase):
 class ProcessTestCaseNoPoll(ProcessTestCase):
     def setUp(self):
         if not getattr(subprocess, '_has_poll', False):
-            raise SkipTest('poll system call not supported')
+            self.skipTest('poll system call not supported')
         subprocess._has_poll = False
         ProcessTestCase.setUp(self)
 
@@ -1382,7 +1382,7 @@ class HelperFunctionTests(unittest.TestCase):
     #@unittest.skipIf(mswindows, "errno and EINTR make no sense on windows")
     def test_eintr_retry_call(self):
         if mswindows:
-            raise SkipTest('errno and EINTR make no sense on windows')
+            self.skipTest('errno and EINTR make no sense on windows')
         record_calls = []
         def fake_os_func(*args):
             record_calls.append(args)
@@ -1408,7 +1408,7 @@ class CommandsWithSpaces (BaseTestCase):
 
     def setUp(self):
         if not mswindows:
-            raise SkipTest('mswindows only')
+            self.skipTest('mswindows only')
 
         super(CommandsWithSpaces, self).setUp()
         f, fname = mkstemp(".py", "te st")

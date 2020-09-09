@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
 import unittest
-from nose import tools
 
 import sys
 import warnings
@@ -21,27 +20,27 @@ class TestDeprecated(unittest.TestCase):
 
     def test_deprecated_functions(self):
         '''Test that all deprecated functions raise DeprecationWarning'''
-        tools.assert_raises(DeprecationWarning, converters.to_utf8, 'café')
-        tools.assert_raises(DeprecationWarning, converters.to_str, 5)
-        tools.assert_raises(DeprecationWarning, converters.to_xml, 'test')
+        self.assertRaises(DeprecationWarning, converters.to_utf8, 'café')
+        self.assertRaises(DeprecationWarning, converters.to_str, 5)
+        self.assertRaises(DeprecationWarning, converters.to_xml, 'test')
 
-        tools.assert_raises(DeprecationWarning, utf8.utf8_valid, 'test')
-        tools.assert_raises(DeprecationWarning, utf8.utf8_width, 'test')
-        tools.assert_raises(DeprecationWarning, utf8.utf8_width_chop, 'test')
-        tools.assert_raises(DeprecationWarning, utf8.utf8_width_fill, 'test', 'asd')
-        tools.assert_raises(DeprecationWarning, utf8.utf8_text_wrap, 'test')
-        tools.assert_raises(DeprecationWarning, utf8.utf8_text_fill, 'test')
-        tools.assert_raises(DeprecationWarning, utf8._utf8_width_le, 'test')
+        self.assertRaises(DeprecationWarning, utf8.utf8_valid, 'test')
+        self.assertRaises(DeprecationWarning, utf8.utf8_width, 'test')
+        self.assertRaises(DeprecationWarning, utf8.utf8_width_chop, 'test')
+        self.assertRaises(DeprecationWarning, utf8.utf8_width_fill, 'test', 'asd')
+        self.assertRaises(DeprecationWarning, utf8.utf8_text_wrap, 'test')
+        self.assertRaises(DeprecationWarning, utf8.utf8_text_fill, 'test')
+        self.assertRaises(DeprecationWarning, utf8._utf8_width_le, 'test')
 
     def test_deprecated_parameters(self):
-        tools.assert_raises(DeprecationWarning, converters.to_unicode, *[5],
+        self.assertRaises(DeprecationWarning, converters.to_unicode, *[5],
                 **{'non_string': 'simplerepr'})
-        tools.assert_raises(DeprecationWarning, converters.to_unicode, *[5],
+        self.assertRaises(DeprecationWarning, converters.to_unicode, *[5],
                 **{'nonstring': 'simplerepr', 'non_string': 'simplerepr'})
 
-        tools.assert_raises(DeprecationWarning, converters.to_bytes, *[5],
+        self.assertRaises(DeprecationWarning, converters.to_bytes, *[5],
                 **{'non_string': 'simplerepr'})
-        tools.assert_raises(DeprecationWarning, converters.to_bytes, *[5],
+        self.assertRaises(DeprecationWarning, converters.to_bytes, *[5],
                 **{'nonstring': 'simplerepr', 'non_string': 'simplerepr'})
 
 
@@ -57,7 +56,7 @@ class TestPendingDeprecationParameters(unittest.TestCase):
 
     def test_parameters(self):
         # test that we warn when using the python2_api parameters
-        tools.assert_raises(PendingDeprecationWarning,
+        self.assertRaises(PendingDeprecationWarning,
                 i18n.get_translation_object, 'test', **{'python2_api': True})
-        tools.assert_raises(PendingDeprecationWarning,
+        self.assertRaises(PendingDeprecationWarning,
                 i18n.DummyTranslations, **{'python2_api': True})
